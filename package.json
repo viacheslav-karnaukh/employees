@@ -1,0 +1,24 @@
+{
+  "name": "EmployeeCollection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "git clone https://github.com/viacheslav-karnaukh/employees.git",
+    "postinstall": "mv node_modules package.json employees && (cd employees && http-server -o)"
+  },
+  "author": "Viacheslav Karnaukh",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^0.8.0",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-cli": "^0.1.0",
+    "karma-coverage": "^0.3.1",
+    "karma-html-reporter": "^0.2.6",
+    "karma-jasmine": "^0.3.5",
+    "karma-requirejs": "^0.2.2",
+    "requirejs": "^2.1.20"
+  }
+}
