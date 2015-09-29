@@ -1,5 +1,7 @@
- define(['components/EmployeeFactory'], function (EmployeeFactory) {
+/*global define, $ */
+define(function(require) {
 	 'use strict';
+	 var EmployeeFactory = require('js/components/EmployeeFactory');
 	 function EmployeesCollection(employees) {
 		 if(arguments.length) {
 			 this.employees = this._sort(employees);
@@ -41,7 +43,7 @@
 		 });
 	 };
 
-	 EmployeesCollection.prototype.getData = function(dataType, source, callFunc) {
+	 EmployeesCollection.prototype.fetchData = function(dataType, source, callFunc) {
 		 switch (dataType) {
 			 case 'html':
 				 this.employees = this._sort(JSON.parse(source));

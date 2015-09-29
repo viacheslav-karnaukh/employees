@@ -1,4 +1,5 @@
-define(function () {
+/*global define */
+define('js/components/Employee', function () {
 	'use strict';
     function Employee() {}
     Employee.prototype.getSalary = function() {

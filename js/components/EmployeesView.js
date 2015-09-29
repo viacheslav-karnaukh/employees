@@ -1,6 +1,10 @@
-define(['jquery', 'components/EmployeesCollection', 'lib/highlight'], function ($, EmployeesCollection, hljs) {
+/*global define, $ */
+define(function (require) {
 	'use strict';
+	var hljs = require('hljs');
+	var EmployeesCollection = require('js/components/EmployeesCollection');
 	function EmployeesView(nodes) {
+		//this.collection = collection;
 		this.textareaButton = nodes.textareaButton;
 		this.inputForWebButton = nodes.inputForWebButton;
 		this.getInfoButton = nodes.getInfoButton;
@@ -14,6 +18,7 @@ define(['jquery', 'components/EmployeesCollection', 'lib/highlight'], function (
 	}
 	EmployeesView.prototype.init = function() {
 		var collection = new EmployeesCollection();
+		var _this = this;
 		function decorateWithHighlight() {
 			$('code').each(function(i, block) {
 				hljs.highlightBlock(block);
@@ -21,31 +26,31 @@ define(['jquery', 'components/EmployeesCollection', 'lib/highlight'], function (
 		}
 
 		this.textareaButton.click(function() {
-			if(this.textarea.val()) {
-				collection.getData('html', this.textarea.val());
-				this.output.append($('<div><code class="hljs json">' + JSON.stringify(collection.employees) + '</code></div>'));
+			if(_this.textarea.val()) {
+				collection.fetchData('html', _this.textarea.val());
+				_this.output.append($('<div><code class="hljs json">' + JSON.stringify(collection.employees) + '</code></div>'));
 			}
 			decorateWithHighlight();
-		}.bind(this));
+		});
 		this.inputForWebButton.click(function() {
 			function cb () {
-				this.output.append($('<div><code class="hljs json">' + JSON.stringify(collection.employees) + '</code></div>'));
+				_this.output.append($('<div><code class="hljs json">' + JSON.stringify(collection.employees) + '</code></div>'));
 				decorateWithHighlight();
-			};
-			collection.getData('json', this.inputForWeb.val(), cb.bind(this));
-		}.bind(this));
+			}
+			collection.fetchData('json', _this.inputForWeb.val(), cb);
+		});
 		this.getInfoButton.click(function() {
-			this.output.append($('<div><code class="hljs json">' + JSON.stringify(collection.getInfo()) + '</code></div>'));
+			_this.output.append($('<div><code class="hljs json">' + JSON.stringify(collection.getInfo()) + '</code></div>'));
 			decorateWithHighlight();
-		}.bind(this));
+		});
 		this.getTopNames.click(function() {
-			this.output.append($('<div><code class="hljs">' + JSON.stringify(collection.getTopNames(this.topNamesInput.val())) + '</code></div>'));
+			_this.output.append($('<div><code class="hljs">' + JSON.stringify(collection.getTopNames(_this.topNamesInput.val())) + '</code></div>'));
 			decorateWithHighlight();
-		}.bind(this));
+		});
 		this.getLastIdsButton.click(function() {
-			this.output.append($('<div><code class="hljs">' + JSON.stringify(collection.getLastIds(this.lastIdsInput.val())) + '</code></div>'));
+			_this.output.append($('<div><code class="hljs">' + JSON.stringify(collection.getLastIds(_this.lastIdsInput.val())) + '</code></div>'));
 			decorateWithHighlight();
-		}.bind(this));
+		});
 	};
 	return EmployeesView;
 });

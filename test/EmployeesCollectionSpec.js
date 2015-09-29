@@ -1,5 +1,6 @@
-define(['../js/components/EmployeesCollection', '../js/components/EmployeeFactory'], function(EmployeesCollection, EmployeeFactory) {
-
+/*global define, describe, beforeEach, expect, it, $ */
+define(['js/components/EmployeesCollection', 'js/components/EmployeeFactory'], function(EmployeesCollection, EmployeeFactory) {
+    'use strict';
     var employeesToTest = [
         {
             "type": "HourlySalaryEmployee",
@@ -84,7 +85,9 @@ define(['../js/components/EmployeesCollection', '../js/components/EmployeeFactor
         });
         it('should sort all employees in DESC order of AVG monthly salary', function() {
             expect(employees.every(function(e,i,a) {
-                if(!i) return true;
+                if(!i) {
+                    return true;
+                }
                 return e.getSalary() <= a[i-1].getSalary();
             })).toBe(true);
         });
@@ -130,7 +133,7 @@ define(['../js/components/EmployeesCollection', '../js/components/EmployeeFactor
         });
         it('should get data from web source if "json" is the first argument', function() {
             var len = null;
-            emptyCollection.getData('json',webSource);
+            emptyCollection.fetchData('json',webSource);
             len = emptyCollection.employees.length;
             setTimeout(function() {
                 expect(len > 0).toBe(true);
@@ -139,7 +142,7 @@ define(['../js/components/EmployeesCollection', '../js/components/EmployeeFactor
         it('should get data from HTML source if "html" is the first argument' , function() {
             var len = null;
             var htmlSource = $('<textarea></textarea>').text(JSON.stringify(employeesToTest));
-            emptyCollection.getData('html', htmlSource.val());
+            emptyCollection.fetchData('html', htmlSource.val());
             len = emptyCollection.employees.length;
             expect(len > 0).toBe(true);
         });
@@ -166,7 +169,7 @@ define(['../js/components/EmployeesCollection', '../js/components/EmployeeFactor
             ];
             expect(function() {
                 var htmlSource = $('<textarea></textarea>').text(JSON.stringify(invalidJson));
-                emptyCollection.getData('html', htmlSource.val());
+                emptyCollection.fetchData('html', htmlSource.val());
             }).toThrowError();
         });
     });

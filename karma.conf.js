@@ -1,8 +1,12 @@
+// Karma configuration
+// Generated on Tue Sep 22 2015 13:21:46 GMT+0300 (FLE Daylight Time)
+/*global module*/
 module.exports = function(config) {
+  'use strict';
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: './',
 
 
     // frameworks to use
@@ -12,29 +16,30 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'js/components/*.js',
-      'specs/*.js'
+      'test/test-main.js',
+      {pattern: 'test/*Spec.js', included: false},
+      {pattern: 'js/components/*.js', included: false},
+      {pattern: 'js/lib/*.js', included: true}
     ],
 
 
     // list of files to exclude
     exclude: [
-      'js/components/EmployeesView.js',
-      'js/app.js'
+        'js/app.js'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'js/**/*.js': ['coverage']
+      'js/components/*.js': ['coverage']
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage', 'html'],
+    reporters: ['progress', 'coverage'],
 
 
     // web server port

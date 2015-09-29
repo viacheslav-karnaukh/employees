@@ -1,13 +1,22 @@
+/*global define */
+/*global requirejs */
+/*global $ */
 requirejs.config({
-    baseUrl: 'js',
+    baseUrl: './',
     paths: {
-        jquery: 'lib/jquery'
+        jquery: 'js/lib/jquery',
+        hljs: 'js/lib/highlight'
     }
 });
 define(function (require) {
     'use strict';
-    var View = require('components/EmployeesView');
-    var nodesForView = {
+    var $ = require('jquery');
+    var View = require('js/components/EmployeesView');
+    //var Collection = require('js/components/EmployeesCollection');
+    //var collection = new Collection();
+    //console.log(collection, 'collection')
+    var nodesForView;
+    nodesForView = {
         textareaButton: $('#getDataArea'),
         inputForWebButton: $('#getDataWeb'),
         getInfoButton: $('#getInfo'),
@@ -20,5 +29,4 @@ define(function (require) {
         output: $('.output')
     };
     new View(nodesForView).init();
-    //hljs.initHighlightingOnLoad();
 });

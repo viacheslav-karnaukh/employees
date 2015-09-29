@@ -1,5 +1,7 @@
-define(['components/Employee'], function (Employee) {
+/*global define */
+define(function (require) {
 	'use strict';
+    var Employee = require('js/components/Employee');
     function HourlySalaryEmployee(parameters) {
         this.salary = parameters.salary;
         this.name = parameters.name;
