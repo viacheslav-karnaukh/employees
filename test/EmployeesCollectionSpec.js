@@ -143,7 +143,7 @@ define(['js/components/EmployeesCollection', 'js/components/createEmployee'], fu
             var htmlSource = $('<textarea></textarea>').text(JSON.stringify(employeesToTest));
             emptyCollection.fetchData('html', htmlSource.val());
             len = emptyCollection.employees.length;
-            expect(len > 0).toBe(true);
+            expect(len).toBeGreaterThan(0);
         });
         it('should throw error if employee type is not valid', function() {
             var invalidJson = [
