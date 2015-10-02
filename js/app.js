@@ -12,9 +12,6 @@ define(function (require) {
     'use strict';
     var $ = require('jquery');
     var View = require('js/components/EmployeesView');
-    //var Collection = require('js/components/EmployeesCollection');
-    //var collection = new Collection();
-    //console.log(collection, 'collection')
     var nodesForView;
     nodesForView = {
         textareaButton: $('#getDataArea'),

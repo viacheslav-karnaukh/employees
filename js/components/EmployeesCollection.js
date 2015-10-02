@@ -1,7 +1,7 @@
 /*global define, $ */
 define(function(require) {
 	 'use strict';
-	 var EmployeeFactory = require('js/components/EmployeeFactory');
+	 var create = require('js/components/createEmployee');
 	 function EmployeesCollection(employees) {
 		 if(arguments.length) {
 			 this.employees = this._sort(employees);
@@ -13,7 +13,7 @@ define(function(require) {
 	 ////Helper to sort by DESC avg salary and ASC alphabetically in case avg salaries are equal.
 	 EmployeesCollection.prototype._sort = function(employees) {
 		 return employees.map(function(employee) {
-			 return new EmployeeFactory().createEmployee(employee);
+			 return new create[employee.type](employee);
 		 }).sort(function(a,b) {
 			 var x = a.name.toLowerCase();
 			 var y = b.name.toLowerCase();
