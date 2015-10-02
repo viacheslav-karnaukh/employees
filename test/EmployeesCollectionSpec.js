@@ -1,5 +1,5 @@
 /*global define, describe, beforeEach, expect, it, $ */
-define(['js/components/EmployeesCollection', 'js/components/EmployeeFactory'], function(EmployeesCollection, EmployeeFactory) {
+define(['js/components/EmployeesCollection', 'js/components/createEmployee'], function(EmployeesCollection, create) {
     'use strict';
     var employeesToTest = [
         {
@@ -67,14 +67,13 @@ define(['js/components/EmployeesCollection', 'js/components/EmployeeFactory'], f
             expect(emptyCollection.employees).toEqual([]);
         });
         it('should count AVG salary for any employee object', function() {
-            var factory = new EmployeeFactory();
-            var fixed = factory.createEmployee({
+            var fixed = new create["FixedSalaryEmployee"]({
                 "type": "FixedSalaryEmployee",
                 "salary": 1000,
                 "name": "Egor",
                 "id": 8
             });
-            var hourly = factory.createEmployee({
+            var hourly = new create["HourlySalaryEmployee"]({
                 "type": "HourlySalaryEmployee",
                 "salary": 8, // avg = 8 * 8 * 20.8 = 1331.2
                 "name": "Bob",
@@ -173,5 +172,4 @@ define(['js/components/EmployeesCollection', 'js/components/EmployeeFactory'], f
             }).toThrowError();
         });
     });
-
 });
