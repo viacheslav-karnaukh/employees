@@ -11,6 +11,8 @@ requirejs.config({
 define(function (require) {
     'use strict';
     var $ = require('jquery');
+    var Collection = require('js/components/EmployeesCollection');
+    var collection = new Collection();
     var View = require('js/components/EmployeesView');
     var nodesForView;
     nodesForView = {
@@ -25,5 +27,5 @@ define(function (require) {
         textarea: $('textarea'),
         output: $('.output')
     };
-    new View(nodesForView).init();
+    new View(nodesForView).init(collection);
 });

@@ -130,14 +130,6 @@ define(['js/components/EmployeesCollection', 'js/components/createEmployee'], fu
             expect(collection.getLastIds(3).length).toBe(3);
             expect(collection.getLastIds(3)[2]).toBe(lastId);
         });
-        it('should get data from web source if "json" is the first argument', function() {
-            var len = null;
-            emptyCollection.fetchData('json',webSource);
-            len = emptyCollection.employees.length;
-            setTimeout(function() {
-                expect(len > 0).toBe(true);
-            },1000);
-        });
         it('should get data from HTML source if "html" is the first argument' , function() {
             var len = null;
             var htmlSource = $('<textarea></textarea>').text(JSON.stringify(employeesToTest));

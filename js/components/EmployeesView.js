@@ -2,9 +2,7 @@
 define(function (require) {
 	'use strict';
 	var hljs = require('hljs');
-	var EmployeesCollection = require('js/components/EmployeesCollection');
 	function EmployeesView(nodes) {
-		//this.collection = collection;
 		this.textareaButton = nodes.textareaButton;
 		this.inputForWebButton = nodes.inputForWebButton;
 		this.getInfoButton = nodes.getInfoButton;
@@ -16,8 +14,7 @@ define(function (require) {
 		this.textarea = nodes.textarea;
 		this.output = nodes.output;
 	}
-	EmployeesView.prototype.init = function() {
-		var collection = new EmployeesCollection();
+	EmployeesView.prototype.init = function(collection) {
 		var _this = this;
 		function decorateWithHighlight() {
 			$('code').each(function(i, block) {
