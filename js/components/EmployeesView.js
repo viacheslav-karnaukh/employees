@@ -1,7 +1,16 @@
 /*global define, $ */
 define(function (require) {
+	/**
+	 * A module representing view of the whole app.
+	 * @module js/components/EmployeesView
+	 */
 	'use strict';
 	var hljs = require('hljs');
+	/**
+	 * @classdesc Initializes view of the whole app depending on provided nodes.
+	 * @constructor
+	 * @param {Object} Each key is bound to value with defined node.
+	 */
 	function EmployeesView(nodes) {
 		this.textareaButton = nodes.textareaButton;
 		this.inputForWebButton = nodes.inputForWebButton;
@@ -14,6 +23,11 @@ define(function (require) {
 		this.textarea = nodes.textarea;
 		this.output = nodes.output;
 	}
+	/**
+	 * Initializes the view and binds events with specified nodes.
+	 * @method init
+	 * @param {Object} collection - instance of EmployeeCollection
+	 */
 	EmployeesView.prototype.init = function(collection) {
 		var _this = this;
 		function decorateWithHighlight() {

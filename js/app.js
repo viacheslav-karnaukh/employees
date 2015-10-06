@@ -1,3 +1,8 @@
+/**
+ * @file Employees Collection app starting point.
+ * @author Viacheslav Karnaukh
+ */
+
 /*global define */
 /*global requirejs */
 /*global $ */
