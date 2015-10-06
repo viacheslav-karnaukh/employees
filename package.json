@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/viacheslav-karnaukh/employees#readme",
   "devDependencies": {
+    "concat": "^1.0.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.9",
     "karma-chrome-launcher": "^0.2.0",
