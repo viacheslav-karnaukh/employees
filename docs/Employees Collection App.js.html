@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Employees Collection App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Employees Collection App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*global define */
+define('js/components/Employee', function () {
+    /**
+     * A module representing an employee.
+     * @module js/components/Employee
+     */
+	'use strict';
+    /**
+     * @classdesc Generic employee entity.
+     * @constructor
+     */
+    function Employee() {}
+    /**
+     * Get employee's salary
+     * @method getSalary
+     * @abstract
+     * @return {Number}
+     */
+    Employee.prototype.getSalary = function() {
+        throw new Error("You should define this method in the class before use.");
+    };
+    return Employee;
+});/*global define */
+define(function (require) {
+    /**
+     * A module representing an employee with fixed salary.
+     * @module js/components/FixedSalaryEmployee
+     */
+	'use strict';
+    var Employee = require('js/components/Employee');
+    /**
+     * @classdesc Employee with fixed salary.
+     * @constructor
+     * @augments Employee
+     */
+    function FixedSalaryEmployee(parameters) {
+        this.salary = parameters.salary;
+        this.name = parameters.name;
+        this.id = parameters.id;
+    }
+    FixedSalaryEmployee.prototype = Object.create(Employee.prototype, {
+        /**
+         * Get employee's salary
+         * @method getSalary
+         * @override
+         * @return {Number}
+         */
+        getSalary: {
+            value: function() {
+                return this.salary;
+            }
+        },
+        constructor: {
+            value: FixedSalaryEmployee
+        }
+    });
+    return FixedSalaryEmployee;
+});/*global define */
+define(function (require) {
+    /**
+     * A module representing an employee with hourly salary.
+     * @module js/components/HourlySalaryEmployee
+     */
+	'use strict';
+    var Employee = require('js/components/Employee');
+    /**
+     * @classdesc Employee with hourly salary.
+     * @constructor
+     * @augments Employee
+     */
+    function HourlySalaryEmployee(parameters) {
+        this.salary = parameters.salary;
+        this.name = parameters.name;
+        this.id = parameters.id;
+    }
+    HourlySalaryEmployee.prototype = Object.create(Employee.prototype, {
+        /**
+         * Get employee's salary
+         * @method getSalary
+         * @override
+         * @return {Number} Salary counted by formula: salary per hour * 20.8 * 8
+         */
+        getSalary: {
+            value: function() {
+                return this.salary * 20.8 * 8;
+            }
+        },
+        constructor: {
+            value: HourlySalaryEmployee
+        }
+    });
+    return HourlySalaryEmployee;
+});/*global define */
+define(function (require) {
+    /**
+     * A module for creating an employee with specified type depending on property.
+     * @module js/components/createEmployee
+     */
+    'use strict';
+    var FixedSalaryEmployee = require('js/components/FixedSalaryEmployee');
+    var HourlySalaryEmployee = require('js/components/HourlySalaryEmployee');
+    /**
+     * Namespace createEmployee for choosing relevant constructor.
+     * @namespace
+     */
+    var createEmployee = {
+        /**
+         * createEmployee['FixedSalaryEmployee'] for FixedSalaryEmployee constructor.
+         * @constructor
+         */
+        'FixedSalaryEmployee': FixedSalaryEmployee,
+        /**
+         * createEmployee['HourlySalaryEmployee'] for HourlySalaryEmployee constructor.
+         * @constructor
+         */
+        'HourlySalaryEmployee': HourlySalaryEmployee
+    };
+    return createEmployee;
+});/*global define, $ */
+define(function(require) {
+	/**
+	 * A module representing a collection of employees with bunch of methods.
+	 * @module js/components/EmployeesCollection
+	 */
+	 'use strict';
+	 var create = require('js/components/createEmployee');
+	/**
+	 * @classdesc Employee collection.
+	 * @constructor
+	 */
+	 function EmployeesCollection(employees) {
+		/**
+		 * A list of sorted employees @see [EmployeesCollection's _sort method]{@link EmployeesCollection#_sort}
+		 * if argument provided, otherwise empty array will be assigned.
+		 * @param {Array} [employees] - A list of employees.
+		 * @prop {Array}
+		 */
+		 if(arguments.length) {
+			 this.employees = this._sort(employees);
+		 } else {
+			 this.employees = [];
+		 }
+	 }
+	/**
+	 * Helper to sort by DESC avg salary and ASC alphabetically in case avg salaries are equal.
+	 * @private
+	 * @method _sort
+	 * @param {Array} employees
+	 * @return {Array}
+	 */
+	 EmployeesCollection.prototype._sort = function(employees) {
+		 return employees.map(function(employee) {
+			 return new create[employee.type](employee);
+		 }).sort(function(a,b) {
+			 var x = a.name.toLowerCase();
+			 var y = b.name.toLowerCase();
+			 return (b.getSalary() - a.getSalary()) || (x &lt; y ? -1 : x > y ? 1 : 0);
+		 });
+	 };
+	/**
+	 * Returns an employee's info
+	 * @method getInfo
+	 * @param {Object} employee
+	 * @return {Object} Object with specified key/value pairs and counted salary depending on employee's type.
+	 */
+	 EmployeesCollection.prototype.getInfo = function() {
+		 return this.employees.map(function(employee) {
+			 return {
+				 id: employee.id,
+				 name: employee.name,
+				 salary: employee.getSalary()
+			 };
+		 });
+	 };
+	/**
+	 * Returns a list of employees' names with top salaries.
+	 * @method getTopNames
+	 * @param {Number}
+	 * @return {Array}
+	 */
+	 EmployeesCollection.prototype.getTopNames = function(quantity) {
+		 return this.employees.slice(0,quantity).map(function(employee) {
+			 return employee.name;
+		 });
+	 };
+	/**
+	 * Returns a list of employees' id's with bottom salaries.
+	 * @method getLastIds
+	 * @param {Number}
+	 * @return {Array}
+	 */
+	 EmployeesCollection.prototype.getLastIds = function(quantity) {
+		 return this.employees.slice(-quantity).map(function(employee) {
+			 return employee.id;
+		 });
+	 };
+	/**
+	 * Overwrites EmployeesCollection#param with data received from either URL or HTML source.
+	 * @method fetchData
+	 * @param {String} type of source
+	 * @param {String} URL or DOM node
+	 * @param {Function} [cb] - The callback that handles the response.
+	 */
+	 EmployeesCollection.prototype.fetchData = function(dataType, source, callFunc) {
+		 switch (dataType) {
+			 case 'html':
+				 this.employees = this._sort(JSON.parse(source));
+				 break;
+			 case 'json':
+				 $.getJSON(source, function(data) {
+					 this.employees = this._sort(data);
+				 }.bind(this)).done(callFunc);
+				 break;
+		 }
+	 };
+	 return EmployeesCollection;
+ });/*global define, $ */
+define(function (require) {
+	/**
+	 * A module representing view of the whole app.
+	 * @module js/components/EmployeesView
+	 */
+	'use strict';
+	var hljs = require('hljs');
+	/**
+	 * @classdesc Initializes view of the whole app depending on provided nodes.
+	 * @constructor
+	 * @param {Object} Each key is bound to value with defined node.
+	 */
+	function EmployeesView(nodes) {
+		this.textareaButton = nodes.textareaButton;
+		this.inputForWebButton = nodes.inputForWebButton;
+		this.getInfoButton = nodes.getInfoButton;
+		this.getTopNames = nodes.getTopNames;
+		this.topNamesInput = nodes.topNamesInput;
+		this.getLastIdsButton = nodes.getLastIdsButton;
+		this.lastIdsInput = nodes.lastIdsInput;
+		this.inputForWeb = nodes.inputForWeb;
+		this.textarea = nodes.textarea;
+		this.output = nodes.output;
+	}
+	/**
+	 * Initializes the view and binds events with specified nodes.
+	 * @method init
+	 * @param {Object} collection - instance of EmployeeCollection
+	 */
+	EmployeesView.prototype.init = function(collection) {
+		var _this = this;
+		function decorateWithHighlight() {
+			$('code').each(function(i, block) {
+				hljs.highlightBlock(block);
+			});
+		}
+
+		this.textareaButton.click(function() {
+			if(_this.textarea.val()) {
+				collection.fetchData('html', _this.textarea.val());
+				_this.output.append($('&lt;div>&lt;code class="hljs json">' + JSON.stringify(collection.employees) + '&lt;/code>&lt;/div>'));
+			}
+			decorateWithHighlight();
+		});
+		this.inputForWebButton.click(function() {
+			function cb () {
+				_this.output.append($('&lt;div>&lt;code class="hljs json">' + JSON.stringify(collection.employees) + '&lt;/code>&lt;/div>'));
+				decorateWithHighlight();
+			}
+			collection.fetchData('json', _this.inputForWeb.val(), cb);
+		});
+		this.getInfoButton.click(function() {
+			_this.output.append($('&lt;div>&lt;code class="hljs json">' + JSON.stringify(collection.getInfo()) + '&lt;/code>&lt;/div>'));
+			decorateWithHighlight();
+		});
+		this.getTopNames.click(function() {
+			_this.output.append($('&lt;div>&lt;code class="hljs">' + JSON.stringify(collection.getTopNames(_this.topNamesInput.val())) + '&lt;/code>&lt;/div>'));
+			decorateWithHighlight();
+		});
+		this.getLastIdsButton.click(function() {
+			_this.output.append($('&lt;div>&lt;code class="hljs">' + JSON.stringify(collection.getLastIds(_this.lastIdsInput.val())) + '&lt;/code>&lt;/div>'));
+			decorateWithHighlight();
+		});
+	};
+	return EmployeesView;
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-js_components_createEmployee.html">js/components/createEmployee</a></li><li><a href="module-js_components_Employee.html">js/components/Employee</a></li><li><a href="module-js_components_EmployeesCollection.html">js/components/EmployeesCollection</a></li><li><a href="module-js_components_EmployeesView.html">js/components/EmployeesView</a></li><li><a href="module-js_components_FixedSalaryEmployee.html">js/components/FixedSalaryEmployee</a></li><li><a href="module-js_components_HourlySalaryEmployee.html">js/components/HourlySalaryEmployee</a></li></ul><h3>Classes</h3><ul><li><a href="-_anonymous_-createEmployee.FixedSalaryEmployee.html">FixedSalaryEmployee</a></li><li><a href="-_anonymous_-createEmployee.HourlySalaryEmployee.html">HourlySalaryEmployee</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Oct 06 2015 21:12:37 GMT+0300 (FLE Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
